@@ -89,13 +89,28 @@ pub fn convert_to_phonetic(input: &str) -> String {
 
     let mut index = 0;
     while index < vec_str.len() {
+        // Zukta Kha
+        if vec_str[index] == 'ক' {
+            if let Some(c) = vec_str.get(index + 1) {
+                if *c == '্' {
+                    if let Some(c) = vec_str.get(index + 2) {
+                        if *c == 'ষ' {
+                            converted.push_str("kkh");
+                            index += 3;
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
         if let Some(c) = map.get(&vec_str[index]) {
             converted.push_str(c);
         }
 
         index += 1;
     }
-    
+
     converted
 }
 
@@ -114,5 +129,6 @@ mod tests {
         assert_eq!(convert_to_phonetic("ঋতু"), "rritu");
         assert_eq!(convert_to_phonetic("ওষুধ"), "oxudh");
         assert_eq!(convert_to_phonetic("সংখ্যা"), "sngkhza");
+        assert_eq!(convert_to_phonetic("ক্ষুধা"), "kkhudha");
     }
 }
