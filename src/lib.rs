@@ -85,11 +85,17 @@ lazy_static! {
 /// Converts input text into their Bengali phonetic counterpart.
 pub fn convert_to_phonetic(input: &str) -> String {
     let mut converted = String::with_capacity(input.len());
-    for character in input.chars() {
-        if let Some(c) = map.get(&character) {
+    let vec_str: Vec<char> = input.chars().collect();
+
+    let mut index = 0;
+    while index < vec_str.len() {
+        if let Some(c) = map.get(&vec_str[index]) {
             converted.push_str(c);
         }
+
+        index += 1;
     }
+    
     converted
 }
 
@@ -107,5 +113,6 @@ mod tests {
         assert_eq!(convert_to_phonetic("আমি"), "ami");
         assert_eq!(convert_to_phonetic("ঋতু"), "rritu");
         assert_eq!(convert_to_phonetic("ওষুধ"), "oxudh");
+        assert_eq!(convert_to_phonetic("সংখ্যা"), "sngkhza");
     }
 }
