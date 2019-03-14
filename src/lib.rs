@@ -3,7 +3,7 @@ use maplit::hashmap;
 use lazy_static::lazy_static;
 
 lazy_static! {
-    static ref map: HashMap<char, &'static str> = hashmap![
+    static ref map: HashMap<char, &'static str> = hashmap! [
         // Numbers
         '০' => "0",
         '১' => "1",
@@ -104,6 +104,22 @@ pub fn convert_to_phonetic(input: &str) -> String {
             }
         }
 
+        if vec_str[index] == '্' {
+            if let Some(c) = vec_str.get(index + 1) {
+                // B Fola
+                if *c == 'ব' {
+                    converted.push_str("w");
+                    index += 2;
+                    continue;
+                } else if *c == 'য' {
+                    // Z Fola
+                    converted.push_str("y");
+                    index += 2;
+                    continue;
+                }
+            }
+        }
+
         if let Some(c) = map.get(&vec_str[index]) {
             converted.push_str(c);
         }
@@ -128,7 +144,12 @@ mod tests {
         assert_eq!(convert_to_phonetic("আমি"), "ami");
         assert_eq!(convert_to_phonetic("ঋতু"), "rritu");
         assert_eq!(convert_to_phonetic("ওষুধ"), "oxudh");
-        assert_eq!(convert_to_phonetic("সংখ্যা"), "sngkhza");
+        assert_eq!(convert_to_phonetic("সংখ্যা"), "sngkhya");
         assert_eq!(convert_to_phonetic("ক্ষুধা"), "kkhudha");
+        assert_eq!(convert_to_phonetic("বিশ্ব"), "bisw");
+        assert_eq!(convert_to_phonetic("পদ্ম"), "pdm");
+        assert_eq!(convert_to_phonetic("জিতেন্দ্র"), "jitendr");
+        assert_eq!(convert_to_phonetic("বিদ্বান"), "bidwan");
+        assert_eq!(convert_to_phonetic("চাঁদ"), "cad");
     }
 }
