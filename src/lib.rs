@@ -124,6 +124,10 @@ pub fn convert_to_phonetic(input: &str) -> String {
             converted.push_str(c);
         }
 
+        if vec_str[index].is_ascii_whitespace() || vec_str[index].is_ascii_punctuation() {
+            converted.push(vec_str[index]);
+        }
+
         index += 1;
     }
 
@@ -151,5 +155,10 @@ mod tests {
         assert_eq!(convert_to_phonetic("জিতেন্দ্র"), "jitendr");
         assert_eq!(convert_to_phonetic("বিদ্বান"), "bidwan");
         assert_eq!(convert_to_phonetic("চাঁদ"), "cad");
+    }
+
+    #[test]
+    fn sentence() {
+        assert_eq!(convert_to_phonetic("আমাদের ভালোবাসা হয়ে গেল ঘাস, খেয়ে গেল গরু আর দিয়ে গেল বাঁশ"), "amader bhalobasa hye gel ghas, kheye gel gru ar diye gel bas");
     }
 }
