@@ -1,85 +1,95 @@
-use std::collections::HashMap;
-use maplit::hashmap;
-use lazy_static::lazy_static;
+//! **dhoni** is a crate for converting Bengali text into their phonetic counterpart.
+//! 
+//! It's output doesn't strictly follow the Avro Phonetic specification, but tries to be
+//! compatible with Avro Phonetic's scheme.
+//! 
+//! # Example: Converting a Bengali word
+//! ```rust
+//! use dhoni::convert_to_phonetic;
+//! 
+//! let banglish = convert_to_phonetic("আমি");
+//! assert_eq!(banglish, "ami");
+//! ```
+//! 
 
-lazy_static! {
-    static ref map: HashMap<char, &'static str> = hashmap! [
+fn letter_map(letter: char) -> Option<&'static str> {
+    match letter {
         // Numbers
-        '০' => "0",
-        '১' => "1",
-        '২' => "2",
-        '৩' => "3",
-        '৪' => "4",
-        '৫' => "5",
-        '৬' => "6",
-        '৭' => "7",
-        '৮' => "8",
-        '৯' => "9",
+        '০' => Some("0"),
+        '১' => Some("1"),
+        '২' => Some("2"),
+        '৩' => Some("3"),
+        '৪' => Some("4"),
+        '৫' => Some("5"),
+        '৬' => Some("6"),
+        '৭' => Some("7"),
+        '৮' => Some("8"),
+        '৯' => Some("9"),
         // Vowels
-        'অ' => "o",
-        'আ' => "a",
-        'ই' => "i",
-        'ঈ' => "i",
-        'উ' => "u",
-        'ঊ' => "u",
-        'ঋ' => "rri",
-        'এ' => "e",
-        'ঐ' => "oi",
-        'ও' => "o",
-        'ঔ' => "ou",
+        'অ' => Some("o"),
+        'আ' => Some("a"),
+        'ই' => Some("i"),
+        'ঈ' => Some("i"),
+        'উ' => Some("u"),
+        'ঊ' => Some("u"),
+        'ঋ' => Some("rri"),
+        'এ' => Some("e"),
+        'ঐ' => Some("oi"),
+        'ও' => Some("o"),
+        'ঔ' => Some("ou"),
         // Kars
-        'া' => "a",
-        'ি' => "i",
-        'ী' => "i",
-        'ু' => "u",
-        'ূ' => "u",
-        'ৃ' => "rri",
-        'ে' => "e",
-        'ৈ' => "oi",
-        'ো' => "o",
-        'ৌ' => "ou",
+        'া' => Some("a"),
+        'ি' => Some("i"),
+        'ী' => Some("i"),
+        'ু' => Some("u"),
+        'ূ' => Some("u"),
+        'ৃ' => Some("rri"),
+        'ে' => Some("e"),
+        'ৈ' => Some("oi"),
+        'ো' => Some("o"),
+        'ৌ' => Some("ou"),
         // Consonants
-        'ক' => "k",
-        'খ' => "kh",
-        'গ' => "g",
-        'ঘ' => "gh",
-        'ঙ' => "ng",
-        'চ' => "c",
-        'ছ' => "ch",
-        'জ' => "j",
-        'ঝ' => "jh",
-        'ঞ' => "ng",
-        'ট' => "t",
-        'ঠ' => "th",
-        'ড' => "d",
-        'ঢ' => "dh",
-        'ণ' => "n",
-        'ত' => "t",
-        'থ' => "th",
-        'দ' => "d",
-        'ধ' => "dh",
-        'ন' => "n",
-        'প' => "p",
-        'ফ' => "f",
-        'ব' => "b",
-        'ভ' => "bh",
-        'ম' => "m",
-        'য' => "z",
-        'র' => "r",
-        'ল' => "l",
-        'শ' => "s",
-        'ষ' => "x",
-        'স' => "s",
-        'হ' => "h",
-        'ড়' => "r",
-        'ঢ়' => "r",
-        'য়' => "y",
-        'ৎ' => "t",
-        'ং' => "ng",
-        'ঃ' => "",
-        'ঁ' => "",
-        //'' => "",
-    ];
+        'ক' => Some("k"),
+        'খ' => Some("kh"),
+        'গ' => Some("g"),
+        'ঘ' => Some("gh"),
+        'ঙ' => Some("ng"),
+        'চ' => Some("c"),
+        'ছ' => Some("ch"),
+        'জ' => Some("j"),
+        'ঝ' => Some("jh"),
+        'ঞ' => Some("ng"),
+        'ট' => Some("t"),
+        'ঠ' => Some("th"),
+        'ড' => Some("d"),
+        'ঢ' => Some("dh"),
+        'ণ' => Some("n"),
+        'ত' => Some("t"),
+        'থ' => Some("th"),
+        'দ' => Some("d"),
+        'ধ' => Some("dh"),
+        'ন' => Some("n"),
+        'প' => Some("p"),
+        'ফ' => Some("f"),
+        'ব' => Some("b"),
+        'ভ' => Some("bh"),
+        'ম' => Some("m"),
+        'য' => Some("z"),
+        'র' => Some("r"),
+        'ল' => Some("l"),
+        'শ' => Some("s"),
+        'ষ' => Some("x"),
+        'স' => Some("s"),
+        'হ' => Some("h"),
+        'ড়' => Some("r"),
+        'ঢ়' => Some("r"),
+        'য়' => Some("y"),
+        'ৎ' => Some("t"),
+        'ং' => Some("ng"),
+        'ঃ' => Some(""),
+        'ঁ' => Some(""),
+        _ => None,
+    }
 }
 
 /// Converts input text into their Bengali phonetic counterpart.
@@ -120,7 +130,7 @@ pub fn convert_to_phonetic(input: &str) -> String {
             }
         }
 
-        if let Some(c) = map.get(&vec_str[index]) {
+        if let Some(c) = letter_map(vec_str[index]) {
             converted.push_str(c);
         }
 
