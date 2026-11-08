@@ -3,9 +3,7 @@
 [![crates.io](https://img.shields.io/crates/v/dhoni.svg)](https://crates.io/crates/dhoni)
 [![DOCS.rs](https://docs.rs/dhoni/badge.svg)](https://docs.rs/dhoni)
 
-A crate for converting Bengali text into their phonetic counterpart.
-
-*Requires Rust version >= 1.31*
+A crate for converting Bengali text into a phonetic Roman counterpart (Avro, Khipro).
 
 ## Usage
 Add this to your `Cargo.toml`:
@@ -15,12 +13,14 @@ dhoni = "0.1"
 ```
 
 ## Example
-This example shows how to use this crate:
 ```rust
-use dhoni::convert_to_phonetic;
+use dhoni::{convert_to_phonetic, Mode};
 
-let banglish = convert_to_phonetic("আমি");
+let banglish = convert_to_phonetic("আমি", Mode::Avro);
 assert_eq!(banglish, "ami");
+
+let khipro = convert_to_phonetic("চাঁদ", Mode::Khipro);
+assert_eq!(khipro, "ca/d");
 ```
 
 ## License
